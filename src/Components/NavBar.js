@@ -40,10 +40,6 @@ const LoginButton = styled.button`
     outline: none;
 `;
 
-
-
-
-
 const NavBar = () => (
     <NavBarStyled>
         <Logo>
