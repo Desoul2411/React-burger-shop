@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import  trashImage from '../image/trash.svg';
+import  trashImage from '../../image/trash.svg';
 
 
 const OrderItemStyled = styled.li`
@@ -10,6 +10,7 @@ const OrderItemStyled = styled.li`
 
 const ItemName = styled.span`
     flex-grow: 1;
+    
 `;
 
 const ItemPrice = styled.span`
@@ -17,6 +18,7 @@ const ItemPrice = styled.span`
     margin-right: 10px;
     min-width: 65px;
     text-align: right;
+    margin-left: 15px;
 `;
 
 const TrashButton = styled.button`
@@ -31,11 +33,13 @@ const TrashButton = styled.button`
     cursor: pointer;
 `;
 
-export const OrderListItem = () => (
+export const OrderListItem = ({order}) => (
     <OrderItemStyled>
-        <ItemName>JS Burer</ItemName>
-        <span>2</span>
-        <ItemPrice>750 р</ItemPrice>
+        <ItemName>{order.name}</ItemName>
+        <span>2 </span>
+        <ItemPrice>{order.price.toLocaleString('ru-Ru',
+        {style: 'currency', currency: 'RUB'})}
+        </ItemPrice>
         <TrashButton/>
     </OrderItemStyled>
 );

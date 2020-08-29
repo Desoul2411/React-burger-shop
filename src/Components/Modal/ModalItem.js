@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ButtonCheckout } from './ButtonCheckout';
+import { ButtonCheckout } from '../ButtonCkeckout/ButtonCheckout';
 
 const Overlay = styled.div`
     position: fixed;
@@ -60,15 +60,25 @@ const HeaderContent = styled.div`
 
 
 
-export const ModalItem = ({ openItem, setOpenItem }) => {
+export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
-    function closeModal(e) {
+    const closeModal = e => {
         if(e.target.id === 'overlay') {
             setOpenItem(null);   // так openItem cстанет null (!openItem) и окно закроется (return null)
         }
     }
 
-    if(!openItem) return null;
+    const order = {
+        ...openItem
+    };
+
+    const addToOrder = () => {
+        setOrders([...orders, order]); // добавляем (передаём в хук setOrders) все старые заказы (orders) и новый (order)
+        setOpenItem(null); // если openItem будут пуст - не отобпажать модальное окно - условие { openItem.openItem &&  <ModalItem {...openItem} {...orders}/> }
+    }
+
+
+   /*  if(!openItem) return null; */
     return (
         <Overlay id="overlay" onClick={closeModal}>
             <Modal>
@@ -84,7 +94,7 @@ export const ModalItem = ({ openItem, setOpenItem }) => {
                             {style: 'currency', currency: 'RUB'})}
                     </ProductPrice>
                 </HeaderContent>
-                <ButtonCheckout>
+                <ButtonCheckout onClick = {addToOrder}>
                     Добавить
                 </ButtonCheckout>
             </Content>

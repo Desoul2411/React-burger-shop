@@ -7,6 +7,7 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
+    font-family: Roboto, sans-serif;
     position: relative;
     font-size: 30px;
     width: 400px;
@@ -36,6 +37,9 @@ const Item = styled.li`
         &:after {
             opacity:0;
         }
+    }
+    & p {
+        font-family: inherit;
     }
 `; 
 
