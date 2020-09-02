@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import  trashImage from '../../image/trash.svg';
 import { totalPriceItems } from '../Functions/secondaryFunction';
 import { formatCurrency } from '../Functions/secondaryFunction';
+import { useToppings } from '../Hooks/useToppings';
+
 
 const OrderItemStyled = styled.li`
     display: flex;
     margin: 15px 0;
+    flex-wrap: wrap;
 `;
 
 const ItemName = styled.span`
@@ -34,12 +37,25 @@ const TrashButton = styled.button`
     cursor: pointer;
 `;
 
-export const OrderListItem = ({order}) => (
-    <OrderItemStyled>
-        <ItemName>{order.name}</ItemName>
-        <span>{order.count} </span>
-        <ItemPrice>{formatCurrency(totalPriceItems(order))}
-        </ItemPrice>
-        <TrashButton/>
-    </OrderItemStyled>
-);
+const Toppings = styled.div`
+    color: #9a9a9a;
+    width: 100%;
+`;
+
+export const OrderListItem = ({ order }) =>  {
+
+    const topping = order.topping.filter(item => item.checked) // отфильтровали по checked
+    .map(item => item.name) // оставили только имя
+    .join(', ');   // преобразовали в строки
+
+    return(
+        <OrderItemStyled>
+            <ItemName>{order.name}</ItemName>
+            <span>{order.count} </span>
+            <ItemPrice>{formatCurrency(totalPriceItems(order))}
+            </ItemPrice>
+            <TrashButton/>
+            {topping && <Toppings>Допы: {topping}</Toppings>}
+        </OrderItemStyled>
+    )
+}
