@@ -77,6 +77,7 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
     const counter = useCount();  //{count,setCount,onChange}
     const toppings = useToppings(openItem);
     const choices = useChoices(openItem);
+    const isEdit = openItem.index > -1;// boolean - true или false. Чтобы не получить false при редактировании первого элемента (index == 0), добавляем сравнение openItem.index > -1;
 
     const closeModal = e => {
         if(e.target.id === 'overlay') {
@@ -88,8 +89,14 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
         ...openItem,
         count: counter.count,
         topping: toppings.toppings,
-        choices: choices.choise,
+        choice: choices.choice,
     };
+
+    const editOrder = () => {
+        const newOrders = [...orders];
+        newOrders[openItem.index] = order;
+        setOrders(newOrders);
+    }
 
     const addToOrder = () => {
         setOrders([...orders, order]); // добавляем (передаём в хук setOrders) все старые заказы (orders) и новый (order)
@@ -114,7 +121,6 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
                 </HeaderContent>
                 <CountItem {...counter} />
                 {openItem.toppings && <Toppings {...toppings}/>}
-                Choices
                 {openItem.choices && <Choices {...choices} openItem={openItem}/>}
                 <TotalPriceItem>
                     <span>Цена:</span>
@@ -122,7 +128,10 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
                     </span>
                 </TotalPriceItem>
                 
-                <ButtonCheckout onClick = {addToOrder}>
+                <ButtonCheckout 
+                    onClick = {isEdit ? editOrder : addToOrder}
+                    disabled={order.choices && !order.choice} // сделать кнопку disabled, если choice есть, но не был выбран
+                >
                     Добавить
                 </ButtonCheckout>
             </Content>

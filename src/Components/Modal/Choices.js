@@ -31,9 +31,10 @@ export function Choices({ openItem, choice, changeChoices }) {
                             type="radio"
                             name="choices"
                             checked={choice === item}  
+                            value={item}
                             onChange={changeChoices} 
                             />
-                        {item.name}
+                        {item}
                     </ChoiceLabel>
                 ))}
             </ChoicesWrap>

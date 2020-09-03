@@ -10,7 +10,7 @@ import { useOrders } from './Components/Hooks/useOrders';
 
 
 function App() {
-  const openItem = useOpenItem(); // {openItem, setOpenItem}
+  const openItem = useOpenItem(); // {openItem, setOpenItem} // хук, открывающий модальное окно 
   const orders = useOrders();  //{orders, setOrders}
 
 
@@ -19,7 +19,7 @@ function App() {
     <>
       <GlobalStyle/>
       <NavBar/>
-      <Order {...orders} />
+      <Order {...orders} {...openItem}/> {/* передали openItem чтобы могли в Order открывать модальное окно */}
       <Menu {...openItem} />
       { openItem.openItem &&  <ModalItem {...openItem} {...orders}/> }
     </>

@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 
@@ -19,10 +18,14 @@ export const ButtonCheckout = styled.button`
     transition-property: color,background-color,border-color;
     transition-duration: .2s;
     &:hover {
-        
         background-color: #fff;
         color: #299B01;
         border-color: #299B01;
+    }
+    &:disabled {
+        color: #bbb;
+        background-color:#ccc;
+        border-color:#aaa;
     }
 `;
 

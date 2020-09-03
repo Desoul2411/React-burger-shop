@@ -7,7 +7,8 @@ const getTopping = toppings => toppings.map(item =>({ // преобразуем 
 //получим: [{name:'Coca-cola',checked: false}, {name:'fanta',...]
 
 export function useToppings(openItem) {
-    const readyTopping = openItem.toppings ? getTopping(openItem.toppings) : []; //если топпингов у товара нет
+    const readyTopping = openItem.topping ? openItem.topping : openItem.toppings ? // - openItem.topping - массив с объектами, который создаём при первом вызове useTopping. Если он уже был создан, то его и вернём уже со значениями true или false (openItem.topping ? openItem.topping), а если ещё не был создан, то будем сохдавать его с нуля.
+    getTopping(openItem.toppings) : []; //если топпингов у товара нет
     const [toppings, setToppings] = useState(readyTopping);
 
     const checkToppings = index => {  // при клике на один из допов меняем значение. Получаем по index эл-т по которому кликнули

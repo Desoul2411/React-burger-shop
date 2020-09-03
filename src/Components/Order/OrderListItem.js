@@ -14,7 +14,6 @@ const OrderItemStyled = styled.li`
 
 const ItemName = styled.span`
     flex-grow: 1;
-    
 `;
 
 const ItemPrice = styled.span`
@@ -42,19 +41,19 @@ const Toppings = styled.div`
     width: 100%;
 `;
 
-export const OrderListItem = ({ order }) =>  {
+export const OrderListItem = ({ order, index, deleteItem, setOpenItem }) =>  {
 
     const topping = order.topping.filter(item => item.checked) // отфильтровали по checked
     .map(item => item.name) // оставили только имя
     .join(', ');   // преобразовали в строки
 
     return(
-        <OrderItemStyled>
-            <ItemName>{order.name}</ItemName>
+        <OrderItemStyled onClick={() => setOpenItem({...order, index})}> {/* при клике открываем модальное окно. Передаём index, чтобы знать какой заказ редак-ем */}
+            <ItemName>{order.name} {order.choice}</ItemName>
             <span>{order.count} </span>
             <ItemPrice>{formatCurrency(totalPriceItems(order))}
             </ItemPrice>
-            <TrashButton/>
+            <TrashButton onClick={() => deleteItem(index)}/>
             {topping && <Toppings>Допы: {topping}</Toppings>}
         </OrderItemStyled>
     )
