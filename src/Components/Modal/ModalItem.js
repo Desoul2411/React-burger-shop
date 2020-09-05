@@ -74,7 +74,7 @@ const TotalPriceItem = styled.div`
 
 export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
-    const counter = useCount();  //{count,setCount,onChange}
+    const counter = useCount(openItem.count);  //{count,setCount,onChange}
     const toppings = useToppings(openItem);
     const choices = useChoices(openItem);
     const isEdit = openItem.index > -1;// boolean - true или false. Чтобы не получить false при редактировании первого элемента (index == 0), добавляем сравнение openItem.index > -1;
@@ -96,12 +96,15 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
         const newOrders = [...orders];
         newOrders[openItem.index] = order;
         setOrders(newOrders);
+        setOpenItem(null); // закрыть модальное после редактирования
     }
 
     const addToOrder = () => {
         setOrders([...orders, order]); // добавляем (передаём в хук setOrders) все старые заказы (orders) и новый (order)
         setOpenItem(null); // если openItem будут пуст - не отобпажать модальное окно - условие { openItem.openItem &&  <ModalItem {...openItem} {...orders}/> }
     }
+
+
 
 
    /*  if(!openItem) return null; */
@@ -132,7 +135,7 @@ export const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
                     onClick = {isEdit ? editOrder : addToOrder}
                     disabled={order.choices && !order.choice} // сделать кнопку disabled, если choice есть, но не был выбран
                 >
-                    Добавить
+                   {isEdit ? 'Редактировать' : 'Добавить'} 
                 </ButtonCheckout>
             </Content>
             
