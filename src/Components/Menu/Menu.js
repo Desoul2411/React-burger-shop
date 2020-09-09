@@ -4,6 +4,7 @@ import { ListItem } from './ListItem';
 import { Banner } from './Banner'; 
 /* import dbMenu from '../DBMenu'; */
 import { useFetch } from '../Hooks/useFetch';
+import Spinner from '../../image/spinner.gif';
 
 const MenuStyled = styled.main`
     background-color: #ccc;
@@ -45,8 +46,8 @@ export const Menu = ({setOpenItem}) => {
                     />
                 </SectionMenu>
             </> : res.error ?
-            <div>Sorry, we will fix it soon...</div>:
-            <div>Loading...</div>
+            <div>Sorry, we will fix it...</div> :
+            <img src={Spinner} alt="анимация загрузки"/> 
             }
         </MenuStyled>
     )
