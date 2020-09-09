@@ -4,6 +4,7 @@ import { ButtonCheckout } from '../ButtonCkeckout/ButtonCheckout';
 import { OrderListItem } from './OrderListItem';
 import { totalPriceItems } from '../Functions/secondaryFunction';
 import { formatCurrency } from '../Functions/secondaryFunction';
+import { projection } from '../Functions/secondaryFunction';
 
 const OrderStyled = styled.section`
     position: fixed;
@@ -50,9 +51,34 @@ const EmptyList = styled.p`
     text-align: center;
 `;
 
+const rulesData = {  // правила базы данных. Свойства ['name'] мы берём из объекта orders,  a name: - новые свойства формируемого объекта
+    name: ['name'],
+    price: ['price'],
+    count:['count'],
+    topping: ['topping',arr => arr.filter(obj => obj.checked).map(obj => obj.name),
+        arr => arr.length ? arr : 'no topping'],
+    choice: ['choice',item => item ? item: 'no choices'],
+}
 
-export const Order = ({orders, setOrders, setOpenItem, authentication, logIn }) => {
 
+export const Order = ({orders, setOrders, setOpenItem, authentication, logIn, firebaseDatabase }) => {
+
+    const dataBase = firebaseDatabase();
+    
+    const sendOrder = () => {
+        //console.log('orders',orders)
+        const newOrder = orders.map(projection(rulesData));
+        //console.log('newOrder',newOrder)
+        dataBase.ref('orders').push().set({   // ref('orders') - ключ под которым будем хранить данные// .push - добавляет ключ (генерируется автоматом)
+            nameClient: authentication.displayName,
+            email: authentication.email,
+            order: newOrder
+        });
+        setOrders([]); // очищаем список заказов после отправки заказов на сервер
+    }
+
+
+    console.log(firebaseDatabase)
     const deleteItem = index => { 
         const newOrders = orders.filter((item, i) => 
             index !== i
@@ -88,7 +114,7 @@ export const Order = ({orders, setOrders, setOpenItem, authentication, logIn }) 
             </Total>
             <ButtonCheckout onClick={() => {
                 if(authentication) {
-                    console.log(orders)
+                    sendOrder();
                 } else {
                     logIn()
                 }

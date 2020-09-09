@@ -6,3 +6,12 @@ export const totalPriceItems = order => {
 
 export const formatCurrency  = priceToconvert => priceToconvert.toLocaleString('ru-Ru',
 {style: 'currency', currency: 'RUB'});
+
+export const projection = (rules) => {
+    const keys = Object.keys(rules);  // ддостаём ключи name,price,count,toppings,choices
+    return obj => keys.reduce((newObj,key) => {//newObj - аккумулятор
+        newObj[key] = rules[key].reduce((val,fn, i) => (i ? fn(val) : obj[fn]),null)  // на первой итерации - val - null,fn - toppings,  i - 0
+        return newObj;
+    },{})  
+};
+

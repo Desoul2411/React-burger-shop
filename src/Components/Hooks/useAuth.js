@@ -22,7 +22,7 @@ export function useAuth(authFirebase) {
                 setAuthentication(null);
             }
         })
-    }, [authentication]);  // если authentication изменится, то cколбэк внутри useEffect запустится
+    }, [auth,authentication]);  //-список зависимостей.  // если authentication изменится, то cколбэк внутри useEffect запустится.
 
     return { authentication, logIn, logOut};  //authentication - объект который хранит все данные пользователя, кторый авторизовался // login - ф-ция, которая будет хапускать авторизацию
 }
