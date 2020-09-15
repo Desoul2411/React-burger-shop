@@ -11,6 +11,10 @@ import { useOpenItem } from './Components/Hooks/useOpenItem';
 import { useOrders } from './Components/Hooks/useOrders';
 import { useAuth } from './Components/Hooks/useAuth';
 import { useTitle } from './Components/Hooks/useTitle';
+import { useDB} from './Components/Hooks/useDB';   // для получения данных из БД
+import { OrderConfirm } from './Components/Order/OrderConfirm';
+import { useOrderConfirm} from './Components/Hooks/useOrderConfirm';
+import { Context } from './Components/Functions/context';
 
 
 const firebaseConfig = {
@@ -30,21 +34,27 @@ function App() {
   const auth = useAuth(firebase.auth);
   const openItem = useOpenItem(); // {openItem, setOpenItem} // хук, открывающий модальное окно 
   const orders = useOrders();  //{orders, setOrders}
+  const orderConfirm = useOrderConfirm(); // объект с переменной и ф-цией
+  const database = firebase.database();
   useTitle(openItem.openItem); // openItem - объект со св-м openItem
+  const dbMenu =  useDB(database); //получить БД
 
   return (
-    <>
+    <Context.Provider value={{  // переданные в Context значения будут видны глобально для всех обёрнутых компонентов
+      auth,
+      openItem,
+      orders,
+      orderConfirm,
+      database: database,
+    }}>
       <GlobalStyle/>
-      <NavBar {...auth}/>
-      <Order 
-        {...orders} 
-        {...openItem} 
-        {...auth}
-        firebaseDatabase={firebase.database}
-      /> {/* передали openItem чтобы могли в Order открывать модальное окно */}
-      <Menu {...openItem} />
-      { openItem.openItem &&  <ModalItem {...openItem} {...orders}/> }
-    </>
+      <NavBar/>
+      <Order /> {/* передали openItem чтобы могли в Order открывать модальное окно / потом переместии в Context.Provider*/}
+      <Menu dbMenu={dbMenu}/>
+      { openItem.openItem &&  <ModalItem /* {...openItem} {...orders} *//> }  {/* теперь передаём openItem и orders через Context */}
+      {orderConfirm.openOrderConfirm && 
+      <OrderConfirm /* {...orders} {...auth} {...orderConfirm}  database={database} *//>}  {/* теперь передаём openItem и orders через Context */}
+    </Context.Provider>
   );
 }
 

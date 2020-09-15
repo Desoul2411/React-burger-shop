@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import logoImg from '../../image/logo.svg';
 import signImg from '../../image/sign.svg';
+import { Context } from '../Functions/context';
 
 const NavBarStyled = styled.header`
     position: fixed;
@@ -61,29 +62,32 @@ const UserIcon = styled.img`
     max-width: 45px;
 `;
 
-const NavBar = ({ authentication, logIn, logOut }) => (
-    <NavBarStyled>
-        <Logo>
-            <ImgLogo src={logoImg} alt="лого"/>
-            <H1>MrDonald's</H1>
-        </Logo>
+const NavBar = () => {
+    const {auth: { authentication, logIn, logOut}} = useContext(Context);  // сразу деструктурируем из полученного объекта auth 
 
-        {authentication ? 
-        <User>
-            <Figure>
-                <UserIcon src={signImg} alt={authentication.displayName}/>
-                <figcaption>{authentication.displayName}</figcaption>
-            </Figure>
-            <LogOut title="Выйти" onClick={logOut}>X</LogOut> 
-        </User> : 
-        <LoginButton onClick={logIn}>
-            <Figure>
-                <UserIcon src={signImg} alt="изображение кнопки войти"/>
-                <figcaption>Войти</figcaption>
-            </Figure>
-            {/* <p>войти</p>  */}
-        </LoginButton>}
-    </NavBarStyled>
-);
+    return (
+        <NavBarStyled>
+            <Logo>
+                <ImgLogo src={logoImg} alt="лого"/>
+                <H1>MrDonald's</H1>
+            </Logo>
 
+            {authentication ? 
+            <User>
+                <Figure>
+                    <UserIcon src={signImg} alt={authentication.displayName}/>
+                    <figcaption>{authentication.displayName}</figcaption>
+                </Figure>
+                <LogOut title="Выйти" onClick={logOut}>X</LogOut> 
+            </User> : 
+            <LoginButton onClick={logIn}>
+                <Figure>
+                    <UserIcon src={signImg} alt="изображение кнопки войти"/>
+                    <figcaption>Войти</figcaption>
+                </Figure>
+                {/* <p>войти</p>  */}
+            </LoginButton>}
+        </NavBarStyled>
+    );
+}
 export default NavBar;

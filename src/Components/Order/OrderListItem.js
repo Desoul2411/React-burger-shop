@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import styled from 'styled-components';
 import  trashImage from '../../image/trash.svg';
 import { totalPriceItems } from '../Functions/secondaryFunction';
 import { formatCurrency } from '../Functions/secondaryFunction';
 import { useToppings } from '../Hooks/useToppings';
+import { Context } from '../Functions/context';
 
 
 const OrderItemStyled = styled.li`
@@ -42,7 +43,9 @@ const Toppings = styled.div`
     width: 100%;
 `;
 
-export const OrderListItem = ({ order, index, deleteItem, setOpenItem }) =>  {
+export const OrderListItem = ({ order, index, deleteItem }) =>  { //теперь setOpenItem получаем через Context
+
+    const { openItem: { setOpenItem } } = useContext(Context);
 
     const topping = order.topping.filter(item => item.checked) // отфильтровали по checked
     .map(item => item.name) // оставили только имя
